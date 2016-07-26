@@ -46,32 +46,36 @@ need_push () {
   fi
 }
 
-# ruby_version() {
-#   if (( $+commands[rbenv] ))
-#   then
-#     echo "$(rbenv version | awk '{print $1}')"
-#   fi
-#
-#   if (( $+commands[rvm-prompt] ))
-#   then
-#     echo "$(rvm-prompt | awk '{print $1}')"
-#   fi
-# }
+ruby_version() {
+  if (( $+commands[rbenv] ))
+  then
+    echo "$(rbenv version | awk '{print $1}')"
+  fi
 
-# rb_prompt() {
-#   if ! [[ -z "$(ruby_version)" ]]
-#   then
-#     echo "%{$fg_bold[yellow]%}$(ruby_version)%{$reset_color%} "
-#   else
-#     echo ""
-#   fi
-# }
-
-directory_name() {
-  echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
+  if (( $+commands[rvm-prompt] ))
+  then
+    echo "$(rvm-prompt | awk '{print $1}')"
+  fi
 }
 
-export PROMPT=$'\n$(rb_prompt)in $(directory_name) $(git_dirty)$(need_push)\n› '
+rb_prompt() {
+  if ! [[ -z "$(ruby_version)" ]]
+  then
+    echo "%{$fg_bold[yellow]%}$(ruby_version)%{$reset_color%} "
+  else
+    echo ""
+  fi
+}
+
+collapse_pwd() {
+    echo $(pwd | sed -e "s,^$HOME,~,")
+}
+
+directory_name() {
+  echo "%{$fg_bold[cyan]%}$(collapse_pwd)%\/%{$reset_color%}"
+}
+
+export PROMPT=$'In $(directory_name) $(git_dirty)$(need_push)\n› '
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }
