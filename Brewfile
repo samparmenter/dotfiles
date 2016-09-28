@@ -19,6 +19,7 @@ brew 'roundup'
 brew 'spaceman-diff'
 brew 'spark'
 brew 'unrar'
+brew 'watchman'
 brew 'wget'
 brew 'youtube-dl'
 
